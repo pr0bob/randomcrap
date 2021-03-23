@@ -181,22 +181,24 @@ public class Display extends JPanel implements ActionListener {
 	public void setBounds(Dimension bounds) {
 		indsideBounds = bounds;
 	}
+	
+	public void updateRockets() {
+		ArrayList<Rocket> deadRockets = new ArrayList<>();
+		for (Rocket r : rockets) {
+			if (r.isAlive()) {
+				r.update();
+			} else {
+				deadRockets.add(r);
+			}
+		}
+		rockets.removeAll(deadRockets);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(frameTimer)) {
 			setBounds(this.getSize());
-
-			ArrayList<Rocket> deadRockets = new ArrayList<>();
-			for (Rocket r : rockets) {
-				if (r.isAlive()) {
-					r.update();
-				} else {
-					deadRockets.add(r);
-				}
-			}
-			rockets.removeAll(deadRockets);
-
+			updateRockets();
 			repaint();
 			currentFrame++;
 		}
